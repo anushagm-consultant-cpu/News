@@ -178,7 +178,8 @@ fun homeScreenUI() {
                                 text = news.description,
                                 fontSize = 14.sp,
                                 color = Color.Gray,
-                                maxLines = 2
+                                maxLines = 2,
+                                lineHeight = 18.sp
                             )
                         }
 
