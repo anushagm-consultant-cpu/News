@@ -169,16 +169,16 @@ fun homeScreenUI() {
                         ) {
                             Text(
                                 text = news.title,
-                                fontSize = 16.sp,
+                                fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = news.description,
-                                fontSize = 18.sp,
+                                fontSize = 14.sp,
                                 color = Color.Gray,
-                                maxLines = 3
+                                maxLines = 2
                             )
                         }
 
