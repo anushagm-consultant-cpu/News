@@ -1,4 +1,4 @@
-package com.example.newspulse.bottom_nav
+package com.example.newspulse.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,8 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -35,13 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.newspulse.R
+import com.example.newspulse.data.NewsItem
 
-// Data model for your news items
-data class NewsItem(
-    val title: String,
-    val description: String,
-    val image: Int
-)
+
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -67,8 +69,8 @@ fun homeScreenUI() {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = 55.dp, bottom = 30.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp),
+        contentPadding = PaddingValues(top = 10.dp),
+
 
         ) {
         // TODAY TRENDING SECTION
@@ -80,24 +82,7 @@ fun homeScreenUI() {
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(250.dp)
-//                        .shadow(
-//                            elevation = 8.dp,
-//                            shape = RoundedCornerShape(15.dp)
-//                        )
-//                        .clip(RoundedCornerShape(15.dp))
-//                        .background(Color.White)
-//                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.img_1),
-//                        contentDescription = null,
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentScale = ContentScale.Crop
-//                    )
-//                }
+
                 val pagerState = rememberPagerState(pageCount = { featuredStories.size })
 
                 Column(
@@ -120,17 +105,106 @@ fun homeScreenUI() {
                         ) { page ->
                             val news = featuredStories[page]
 
-                                Image(
-                                    painter = painterResource(news.image),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxSize()
-                                )
+                               Box(
+
+                               ) {
+                                   Image(
+                                       painter = painterResource(news.image),
+                                       contentDescription = null,
+                                       contentScale = ContentScale.Crop,
+                                       modifier = Modifier.fillMaxSize()
+                                   )
+
+                                   Box() {
+                                     Column(
+                                         modifier = Modifier.padding(top = 100.dp, start = 20.dp, end = 20.dp)
+                                     ) {
+                                         Text(text = news.description,
+                                             color = Color.White,
+
+                                             fontSize = 28.sp,
+                                             fontWeight = FontWeight.Bold,
+                                         style= TextStyle(
+                                             shadow = Shadow(
+                                                 color = Color.Black.copy(0.8f),
+                                                 offset = Offset(5f,5f),
+                                                 blurRadius = 10f
+                                             )
+                                         )
+                                         )
+
+
+                                         Spacer(modifier = Modifier.height(20.dp))
+                                         Row() {
+                                             Text(text = "4 min ago",
+                                                 color = Color.White,
+                                                 fontSize = 15.sp,
+                                                 fontWeight = FontWeight.SemiBold,
+                                                 style= TextStyle(
+                                                     shadow = Shadow(
+                                                         color = Color.Black.copy(0.8f),
+                                                         offset = Offset(5f,5f),
+                                                         blurRadius = 10f
+                                                     )
+                                                 ))
+
+                                             Spacer(modifier = Modifier.width(20.dp))
+                                             Text(text = news.title,
+                                                 color = Color.White,
+                                                 fontSize = 15.sp,
+                                                 fontWeight = FontWeight.SemiBold,
+                                                 style= TextStyle(
+                                                     shadow = Shadow(
+                                                         color = Color.Black.copy(0.8f),
+                                                         offset = Offset(5f,5f),
+                                                         blurRadius = 10f
+                                                     )
+                                                 ))
+                                         }
+                                     }
+                                   }
+                               }
+
 
 
 
                         }
                     }
+                Spacer(modifier = Modifier.height(10.dp))
+
+                //Page Indicator
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                      , horizontalArrangement = Arrangement.Center
+
+                ) {
+                    repeat(featuredStories.size) {index->
+                        Box(
+                            modifier = Modifier.padding(4.dp)
+                                .height(6.dp)
+                                .clip(CircleShape)
+                                .width(
+                                    if(pagerState.currentPage==index){
+                                        20.dp
+
+                                    } else {
+                                        8.dp
+                                    }
+                                )
+                                .background(
+                                    if(pagerState.currentPage==index) {
+                                        colorResource(id = R.color.teal_700)
+
+                                    }else
+                                     Color.LightGray
+                                )
+
+
+                        ) { }
+
+                    }
+                }
 
 
 
@@ -181,7 +255,7 @@ fun homeScreenUI() {
                         Box(
                             modifier = Modifier
                                 .width(270.dp)
-                                .height(300.dp)
+                                .height(270.dp)
                                 .shadow(elevation = 5.dp, shape = RoundedCornerShape(25.dp))
                                 .clip(RoundedCornerShape(25.dp))
                                 .background(Color.White)
@@ -192,20 +266,24 @@ fun homeScreenUI() {
                                     contentDescription = null,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(190.dp),
+                                        .height(170.dp),
                                     contentScale = ContentScale.Crop
                                 )
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(
-                                        text = news.title,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.SemiBold
+                                        text = news.title.uppercase(),
+                                        fontSize = 12.sp,
+                                        color=colorResource(id=R.color.teal_700),
+                                        fontWeight = FontWeight.Bold,
+
+
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
                                         text = news.description,
-                                        fontSize = 14.sp,
-                                        color = Color.Gray,
+                                        fontSize = 16.sp,
+                                        color = Color.Black,
+                                        fontWeight = FontWeight.Bold,
                                         maxLines = 2,
                                         style = TextStyle(lineHeight = 20.sp)
                                     )
@@ -215,6 +293,7 @@ fun homeScreenUI() {
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
 
         // LATEST NEWS HEADER
@@ -229,20 +308,23 @@ fun homeScreenUI() {
 
         // LATEST NEWS LIST
         items(6) {
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 20.dp, vertical =8.dp)
                     .shadow(2.dp, RoundedCornerShape(12.dp))
                     .background(Color.White, RoundedCornerShape(12.dp))
                     .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+
             ) {
                 Box(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .background(Color.LightGray)
+
                 ) {
                     Image(
                         painter = painterResource(R.drawable.img_3),
@@ -258,7 +340,7 @@ fun homeScreenUI() {
                         text = "LOCAL",
                         modifier = Modifier.padding(bottom = 3.dp),
                         fontWeight = FontWeight.Bold,
-                        color = Color.Gray,
+                        color = colorResource(id=R.color.teal_700),
                         fontSize = 12.sp,
 
                         )
