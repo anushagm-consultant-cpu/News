@@ -7,11 +7,13 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -34,6 +36,7 @@ fun MyNavBar(navController: NavHostController) {
 
         val currentDestination = navBackStackEntry?.destination
 
+
         navItems.forEach { item ->
 
             val isSelected = currentDestination?.hasRoute(item.route::class) == true
@@ -43,30 +46,38 @@ fun MyNavBar(navController: NavHostController) {
                 label = { Text(item.title) },
 
                 onClick = {
-                    navController.navigate(item.route) {
 
-                        // Pop up to the start destination of the graph to avoid stacking
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                        navController.navigate(item.route){
+                            popUpTo(navController.graph.findStartDestination().id){
+                                saveState = true
+                            }
+                            //Avoid multiple copies of the same destination when clicking the same icon twice
+                            launchSingleTop = true
+                            //Restore the state when re-selecting a previously visited tab
+                            restoreState = true
+
                         }
-                        // this  Avoid multiple copies of the same destination
-                        launchSingleTop = true
-                        // Restore state when re-selecting a previous item
-                        restoreState = true
-                    }
+
                 },
                 icon = {
                     Icon(
                         imageVector = if(isSelected){
                             item.iconSelected
+
                         }else{
                             item.iconUnselected
                         },
                         contentDescription = item.title,
+
                         modifier = Modifier.size(25.dp)
 
                     )
-                }
+                }, colors= NavigationBarItemDefaults.colors(
+                    selectedIconColor = colorResource(id = com.example.newspulse.R.color.teal_700),
+                    selectedTextColor = colorResource(id = com.example.newspulse.R.color.teal_700),
+                   indicatorColor = colorResource(id = com.example.newspulse.R.color.teal_700).copy(0.2f),
+
+                ),
             )
         }
     }

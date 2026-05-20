@@ -36,17 +36,20 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun MyTopBar() {
+fun MyTopBar(
+    onSearchClick: () -> Unit
+) {
+
 
     Surface(
-        tonalElevation = 3.dp,
-        shadowElevation = 3.dp,
+        tonalElevation = 3.dp, //changes the color tint
+        shadowElevation = 3.dp, //adds the actual shadow to the surface
 
     ) {
 
         Box(
             modifier = Modifier.fillMaxWidth()
-                .statusBarsPadding()
+                .statusBarsPadding() //This pushes the Box down so it starts below the clock
                 .padding(horizontal = 16.dp, vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -59,14 +62,15 @@ fun MyTopBar() {
 
                 )
             IconButton(
-                onClick = {},
+                onClick = onSearchClick,
                 modifier = Modifier.align(Alignment.CenterEnd)
 
             ) {
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Serach",
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(28.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 
@@ -79,6 +83,6 @@ fun MyTopBar() {
 @Composable
 fun MyTopBarPreview() {
     MaterialTheme {
-        MyTopBar()
+        MyTopBar(onSearchClick = {})
     }
 }

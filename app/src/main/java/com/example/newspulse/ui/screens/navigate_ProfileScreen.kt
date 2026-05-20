@@ -207,7 +207,9 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {}
+                            .clickable {
+                                onNavigate(Route.MyInterestAndPreference)
+                            }
                             .background(color = Color.White)
                             .padding(horizontal = 20.dp),
 
@@ -242,7 +244,9 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {}
+                            .clickable {
+                                onNavigate(Route.MyrNotificationScreen)
+                            }
                             .background(color = Color.White)
                             .padding(horizontal = 20.dp),
 
@@ -277,7 +281,9 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {}
+                            .clickable {
+                                onNavigate(Route.MyAppThemeScreen)
+                            }
                             .background(color = Color.White)
                             .padding(horizontal = 20.dp),
 
@@ -311,10 +317,12 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {}
+                            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
+                            .clickable {
+                                onNavigate(Route.MyHelpScreen)
+                            }
                             .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp)
+                                color = Color.White
                             )
                             .padding(horizontal = 20.dp),
 
@@ -347,14 +355,19 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
         }
         //Logout button
         item {
-            OutlinedButton(
-                onClick = {},
-                modifier = Modifier.padding(horizontal = 145.dp, vertical = 15.dp),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x6BDA7474))
-            ) {
-                Text(text = "Log out".uppercase(), color = Color.Red)
+         Box(
+             modifier = Modifier.fillMaxSize(),
+             contentAlignment = Alignment.BottomCenter
+         ){
+             OutlinedButton(
+                 onClick = {},
+                 modifier = Modifier.padding( vertical = 15.dp),
+                 border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x6BDA7474))
+             ) {
+                 Text(text = "Log out".uppercase(), color = Color.Red)
 
-            }
+             }
+         }
         }
 
     }
