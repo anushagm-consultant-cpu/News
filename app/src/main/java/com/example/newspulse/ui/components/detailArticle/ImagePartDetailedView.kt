@@ -22,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,7 +61,7 @@ fun ImagePartDeatiledArticle(image: Int,title: String, description: String){
                 )
         )
         Column(
-            modifier = Modifier.padding(top = 330.dp, start = 20.dp, end = 20.dp)
+            modifier = Modifier.padding(top = 290.dp, start = 20.dp, end = 20.dp)
         ) {
             Row() {
                 Box(
@@ -86,8 +87,9 @@ fun ImagePartDeatiledArticle(image: Int,title: String, description: String){
                 text = description,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                fontSize = 32.sp,
-                style = TextStyle(lineHeight = 30.sp)
+                fontSize = 38.sp,
+                fontFamily = FontFamily.Serif,
+                style = TextStyle(lineHeight = 40.sp)
             )
         }
     }

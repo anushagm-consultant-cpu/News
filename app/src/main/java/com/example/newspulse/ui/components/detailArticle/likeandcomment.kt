@@ -3,6 +3,7 @@ package com.example.newspulse.ui.components.detailArticle
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -24,7 +25,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun likeandComment(){
     var islike by remember { mutableStateOf(false) }
+    Spacer(modifier = Modifier.height(20.dp))
     HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp))
+    Spacer(modifier = Modifier.height(20.dp))
     Row(
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
     ) {
@@ -50,4 +53,5 @@ fun likeandComment(){
             )
         Text(text = "128")
     }
+    Spacer(modifier = Modifier.height(40.dp))
 }

@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.newspulse.data.repository.NewsRepository
 import com.example.newspulse.ui.screens.ExploreScreen
 import com.example.newspulse.ui.screens.ProfileScreen
 import com.example.newspulse.ui.screens.SaveScreen
@@ -24,6 +24,7 @@ import com.example.newspulse.ui.screens.homeScreenUI
 import com.example.newspulse.navigation.Route
 import com.example.newspulse.ui.components.MyNavBar
 import com.example.newspulse.ui.components.MyTopBar
+import com.example.newspulse.ui.components.detailArticle.ArticleSwipeScreen
 import com.example.newspulse.ui.screens.MyAppThemeScreen
 import com.example.newspulse.ui.screens.MyDetailedArticleScreen
 import com.example.newspulse.ui.screens.MyHelpScreen
@@ -49,6 +50,11 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainScreen() {
+
+    // Initialize Repository to get the list of articles
+    val newsRepository = NewsRepository()
+    val allNews = newsRepository.fectchNews()
+
     //  Initialize the NavController
     val navController = rememberNavController()
 
@@ -67,7 +73,9 @@ fun MainScreen() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            MyTopBar(onSearchClick = {})
+            if(showBottomBar) {
+                MyTopBar(onSearchClick = {})
+            }
         },
         bottomBar = {
            if(showBottomBar){
@@ -80,22 +88,22 @@ fun MainScreen() {
             NavHost( //it is the empty window where the screens will appear
                 navController = navController,
                 startDestination = Route.Home, // Starting screen class
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.fillMaxSize()
             ) {
                 // Map each Route class to a Composable screen
                 composable<Route.Home> {
-                    homeScreenUI(navController=navController)
+                    homeScreenUI(navController=navController,innerPadding)
                 }
                 composable<Route.Explore> {
-                    ExploreScreen()
+                    ExploreScreen(innerPadding  )
                 }
                 composable<Route.Save> {
-                    SaveScreen()
+                    SaveScreen(innerPadding)
                 }
                 composable<Route.Profile> {
                     ProfileScreen(onNavigate = {route ->
                         navController.navigate(route)
-                    })
+                    },innerPadding)
                 }
                composable<Route.MyreadingHistroy>{
                    MyreadingHistroy()
@@ -116,11 +124,19 @@ fun MainScreen() {
 
                     val args =backStackEntry.toRoute<Route.MyDetailedArticleScreen>()
 
-                    MyDetailedArticleScreen(
-                        image = args.image,
-                        title = args.title,
-                        description = args.description,
-                        content = args.content
+//                    MyDetailedArticleScreen(
+//                        image = args.image,
+//                        title = args.title,
+//                        description = args.description,
+//                        content = args.content
+//                    )
+                    val initialPageIndex = allNews.indexOfFirst { it.title == args.title }
+
+                    ArticleSwipeScreen(
+                        article = allNews,
+                        Initialpage = initialPageIndex,
+                        onBack = {navController.popBackStack()}
+
                     )
                 }
             }

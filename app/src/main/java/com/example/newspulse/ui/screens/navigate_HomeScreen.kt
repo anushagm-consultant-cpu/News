@@ -30,6 +30,7 @@ import com.example.newspulse.ui.viewmodel.HomeViewModel
 @Composable
 fun homeScreenUI(
     navController: NavController,
+    innerPadding: PaddingValues,
     HomeViewModel: HomeViewModel = viewModel()
 ) {
 
@@ -37,7 +38,7 @@ fun homeScreenUI(
 
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(innerPadding),
         contentPadding = PaddingValues(top = 10.dp),
     ) {
         // TODAY TRENDING SECTION

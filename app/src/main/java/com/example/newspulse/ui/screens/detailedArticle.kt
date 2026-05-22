@@ -2,30 +2,14 @@ package com.example.newspulse.ui.screens
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.HeartBroken
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,16 +21,25 @@ import com.example.newspulse.ui.components.detailArticle.likeandComment
 
 
 @Composable
-fun MyDetailedArticleScreen(image: Int,title: String, description: String, content: String) {
+fun MyDetailedArticleScreen(
+    image: Int,
+    title: String,
+    description: String,
+    content: String,
+    onBack: () -> Unit
+) {
+
+
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+
+
             .background(color = Color.White),
 
 
         ) {
         item {
-            ImagePartDeatiledArticle(image,title, description)
+            ImagePartDeatiledArticle(image, title, description)
 
         }
         item {
@@ -90,8 +83,8 @@ fun MyPreviewOfDetailArticle() {
                     "\n" +
                     "Industry experts point to the \"halving\" events and the introduction of spot ETFs as critical catalysts. These mechanisms have not only reduced the available supply but have also democratized access for millions of retail investors who prefer the security of traditional brokerage accounts over direct wallet management.\n" +
                     "\n" +
-                    "However, the road ahead is not without challenges. Sustainability remains a central theme in the discourse, with increased pressure on mining operations to transition toward renewable energy sources. The intersection of environmental responsibility and digital scarcity will likely define the next chapter of the Bitcoin story."
-
+                    "However, the road ahead is not without challenges. Sustainability remains a central theme in the discourse, with increased pressure on mining operations to transition toward renewable energy sources. The intersection of environmental responsibility and digital scarcity will likely define the next chapter of the Bitcoin story.",
+            onBack = {}
         )
     }
 }

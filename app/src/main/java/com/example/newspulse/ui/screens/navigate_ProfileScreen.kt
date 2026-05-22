@@ -41,12 +41,13 @@ import androidx.compose.ui.unit.sp
 import com.example.newspulse.navigation.Route
 
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
-fun ProfileScreen(onNavigate: (Route) -> Unit = {}) {
+fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues ) {
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(innerPadding),
+
         contentPadding = PaddingValues(top = 40.dp),
     ) {
         item {
