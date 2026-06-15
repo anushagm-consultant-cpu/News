@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.HeartBroken
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +27,10 @@ import androidx.compose.ui.unit.dp
 fun likeandComment(){
     var islike by remember { mutableStateOf(false) }
     Spacer(modifier = Modifier.height(20.dp))
-    HorizontalDivider(modifier = Modifier.padding(horizontal = 24.dp))
+    HorizontalDivider(
+        modifier = Modifier.padding(horizontal = 24.dp),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+    )
     Spacer(modifier = Modifier.height(20.dp))
     Row(
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
@@ -34,24 +38,26 @@ fun likeandComment(){
         Icon(
             imageVector = Icons.Default.HeartBroken,
             contentDescription = null,
-            tint = if (islike) Color.Red else Color.Gray,
+            tint = if (islike) Color.Red else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             modifier = Modifier.size(48.dp)
                 .clickable {islike = !islike}.padding(start = 24.dp)
-
-
-
         )
         Spacer(modifier = Modifier.width(10.dp))
-        Text(text = "2.4k")
+        Text(
+            text = "2.4k",
+            color = MaterialTheme.colorScheme.onSurface
+        )
         Spacer(modifier = Modifier.width(20.dp))
         Icon(
             imageVector = Icons.Default.Chat,
             contentDescription = null,
-            tint = Color.Gray,
+            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             modifier = Modifier.size(48.dp).padding(horizontal = 10.dp),
-
-            )
-        Text(text = "128")
+        )
+        Text(
+            text = "128",
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
     Spacer(modifier = Modifier.height(40.dp))
 }

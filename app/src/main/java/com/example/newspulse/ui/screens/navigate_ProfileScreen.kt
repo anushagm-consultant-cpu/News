@@ -1,5 +1,6 @@
 package com.example.newspulse.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,34 +21,50 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newspulse.navigation.Route
-
-
+import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
+import com.example.newspulse.ui.viewmodel.AuthViewModel
+import com.example.newspulse.ui.viewmodel.HistoryViewModel
+import com.example.newspulse.ui.viewmodel.SavedViewModel
 
 @Composable
-fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues ) {
+fun ProfileScreen(
+    onNavigate: (Route) -> Unit = {},
+    onLogout: () -> Unit = {},
+    innerPadding: PaddingValues,
+    savedViewModel: SavedViewModel = viewModel(),
+    historyViewModel: HistoryViewModel=viewModel(),
+    authViewModel: AuthViewModel=viewModel()
+) {
+    val savedCount by savedViewModel.savedNews.collectAsState()
 
+    val historyCount by historyViewModel.historyNews.collectAsState()
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(innerPadding),
-
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(innerPadding),
         contentPadding = PaddingValues(top = 40.dp),
     ) {
         item {
@@ -55,7 +72,7 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
-                    .background(color = Color(0x4AD5CDCD), RoundedCornerShape(10.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(10.dp))
                     .height(100.dp)
             ) {
                 Column(
@@ -72,84 +89,84 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                             modifier = Modifier
                                 .height(95.dp)
                                 .width(123.dp)
-                                .background(Color.White, RoundedCornerShape(5.dp))
+                                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
                         ) {
-
                             Column(
                                 modifier = Modifier.align(Alignment.Center),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
-                                    text = "1,234",
-                                    color = colorResource(id = com.example.newspulse.R.color.teal_700),
+                                AutoText(
+                                    text ="${ historyCount.size}",
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
+                                    baseFontSize = 18.sp
                                 )
-                                Text(
+                                AutoText(
                                     text = "ARTICLES \n    READ",
-                                    fontSize = 13.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    baseFontSize = 13.sp,
                                     lineHeight = 12.sp
                                 )
                             }
-
                         }
                         //Saved Articles
                         Box(
                             modifier = Modifier
                                 .height(95.dp)
                                 .width(123.dp)
-                                .background(Color.White, RoundedCornerShape(5.dp))
+                                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
                         ) {
                             Column(
                                 modifier = Modifier.align(Alignment.Center),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
-                                    text = "34",
-                                    color = colorResource(id = com.example.newspulse.R.color.teal_700),
-                                    fontWeight = FontWeight.Bold, fontSize = 18.sp
+                                AutoText(
+                                    text = "${savedCount.size}",
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold, baseFontSize = 18.sp
                                 )
-                                Text(
+                                AutoText(
                                     text = "SAVED",
-                                    fontSize = 13.sp
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    baseFontSize = 13.sp
                                 )
                             }
-
                         }
                         //Topics
                         Box(
                             modifier = Modifier
                                 .height(95.dp)
                                 .width(123.dp)
-                                .background(Color.White, RoundedCornerShape(5.dp))
+                                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
                         ) {
                             Column(
                                 modifier = Modifier.align(Alignment.Center),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Text(
+                                AutoText(
                                     text = "12",
-                                    color = colorResource(id = com.example.newspulse.R.color.teal_700),
+                                    color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
+                                    baseFontSize = 18.sp
                                 )
-                                Text(text = "TOPICS", fontSize = 13.sp)
+                                AutoText(
+                                    text = "TOPICS",
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    baseFontSize = 13.sp
+                                )
                             }
-
                         }
                     }
-
                 }
-
             }
         }
         item {
-            Text(
+            AutoText(
                 text = "Account Settings".uppercase(),
-                fontSize = 15.sp,
+                baseFontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 10.dp),
-                color = colorResource(id = com.example.newspulse.R.color.teal_700)
+                color = MaterialTheme.colorScheme.primary
             )
         }
         item {
@@ -158,9 +175,7 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp)
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(10.dp))
-
-                    .background(color = Color.LightGray, RoundedCornerShape(10.dp))
-
+                    .background(MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
                     .wrapContentHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(1.dp)
@@ -172,33 +187,32 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                             .fillMaxWidth()
                             .height(70.dp)
                             .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp))
-                            .clickable {
-                                onNavigate(Route.MyreadingHistroy)
-
-                            }
-                            .background(color = Color.White)
+                            .clickable { onNavigate(Route.MyreadingHistroy) }
+                            .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 20.dp),
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = "History",
                             modifier = Modifier
-
                                 .size(40.dp)
-                                .background(color = Color(0x4AD5CDCD), RoundedCornerShape(8.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                                 .padding(8.dp),
-                            tint = colorResource(id = com.example.newspulse.R.color.teal_700)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Reading history", fontSize = 18.sp)
+                        AutoText(
+                            text = "Reading history", 
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = Icons.Default.ArrowForwardIos,
                             contentDescription = "Navigate",
                             modifier = Modifier.size(16.dp),
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     }
                 }
@@ -208,107 +222,137 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {
-                                onNavigate(Route.MyInterestAndPreference)
-                            }
-                            .background(color = Color.White)
+                            .clickable { onNavigate(Route.MyInterestAndPreference) }
+                            .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 20.dp),
-
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Icon(
                             imageVector = Icons.Default.Interests,
                             contentDescription = "History",
                             modifier = Modifier
-
                                 .size(40.dp)
-                                .background(color = Color(0x4AD5CDCD), RoundedCornerShape(8.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                                 .padding(8.dp),
-                            tint = colorResource(id = com.example.newspulse.R.color.teal_700)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Interest & Perference", fontSize = 18.sp)
+                        AutoText(
+                            text = "Interest & Perference", 
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = Icons.Default.ArrowForwardIos,
                             contentDescription = "Navigate",
                             modifier = Modifier.size(16.dp),
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     }
                 }
-
                 //Box 3 ----Notification
                 Box {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {
-                                onNavigate(Route.MyrNotificationScreen)
-                            }
-                            .background(color = Color.White)
+                            .clickable { onNavigate(Route.MyrNotificationScreen) }
+                            .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 20.dp),
-
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Icon(
                             imageVector = Icons.Default.Notifications,
                             contentDescription = "History",
                             modifier = Modifier
-
                                 .size(40.dp)
-                                .background(color = Color(0x4AD5CDCD), RoundedCornerShape(8.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                                 .padding(8.dp),
-                            tint = colorResource(id = com.example.newspulse.R.color.teal_700)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Notification", fontSize = 18.sp)
+                        AutoText(
+                            text = "Notification", 
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = Icons.Default.ArrowForwardIos,
                             contentDescription = "Navigate",
                             modifier = Modifier.size(16.dp),
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     }
                 }
-
                 //box 4 ----- App theme
                 Box {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .clickable {
-                                onNavigate(Route.MyAppThemeScreen)
-                            }
-                            .background(color = Color.White)
+                            .clickable { onNavigate(Route.MyAppThemeScreen) }
+                            .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 20.dp),
-
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "History",
                             modifier = Modifier
-
                                 .size(40.dp)
-                                .background(color = Color(0x4AD5CDCD), RoundedCornerShape(8.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                                 .padding(8.dp),
-                            tint = colorResource(id = com.example.newspulse.R.color.teal_700)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "App Theme", fontSize = 18.sp)
+                        AutoText(
+                            text = "App Theme", 
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = Icons.Default.ArrowForwardIos,
                             contentDescription = "Navigate",
                             modifier = Modifier.size(16.dp),
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                        )
+                    }
+                }
+//font size customize
+                Box {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(70.dp)
+                            .clickable { onNavigate(Route.FontSizeScreen) }
+                            .background(color = MaterialTheme.colorScheme.surface)
+                            .padding(horizontal = 20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.FontDownload,
+                            contentDescription = "History",
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+                                .padding(8.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        AutoText(
+                            text = "Font Size",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Icon(
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            contentDescription = "Navigate",
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     }
                 }
@@ -319,57 +363,59 @@ fun ProfileScreen(onNavigate: (Route) -> Unit = {},innerPadding: PaddingValues )
                             .fillMaxWidth()
                             .height(70.dp)
                             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-                            .clickable {
-                                onNavigate(Route.MyHelpScreen)
-                            }
-                            .background(
-                                color = Color.White
-                            )
+                            .clickable { onNavigate(Route.MyHelpScreen) }
+                            .background(color = MaterialTheme.colorScheme.surface)
                             .padding(horizontal = 20.dp),
-
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Icon(
                             imageVector = Icons.Default.HelpOutline,
                             contentDescription = "History",
                             modifier = Modifier
-
                                 .size(40.dp)
-                                .background(color = Color(0x4AD5CDCD), RoundedCornerShape(8.dp))
+                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
                                 .padding(8.dp),
-                            tint = colorResource(id = com.example.newspulse.R.color.teal_700)
+                            tint = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Help & Support", fontSize = 18.sp)
+                        AutoText(
+                            text = "Help & Support", 
+                            color = MaterialTheme.colorScheme.onSurface,
+                            baseFontSize = 18.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
                         Icon(
                             imageVector = Icons.Default.ArrowForwardIos,
                             contentDescription = "Navigate",
                             modifier = Modifier.size(16.dp),
-                            tint = Color.Gray
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                         )
                     }
                 }
-
             }
         }
         //Logout button
         item {
-         Box(
-             modifier = Modifier.fillMaxSize(),
-             contentAlignment = Alignment.BottomCenter
-         ){
-             OutlinedButton(
-                 onClick = {},
-                 modifier = Modifier.padding( vertical = 15.dp),
-                 border = androidx.compose.foundation.BorderStroke(1.dp, Color(0x6BDA7474))
-             ) {
-                 Text(text = "Log out".uppercase(), color = Color.Red)
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        authViewModel.logout(onLogout)
+                    },
+                    modifier = Modifier.padding(vertical = 15.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
 
-             }
-         }
+
+                ) {
+                    AutoText(text = "Log out"
+                        .uppercase(),
+                        color = MaterialTheme.colorScheme.error,
+                        baseFontSize = 16.sp)
+                }
+            }
         }
-
     }
 }
+

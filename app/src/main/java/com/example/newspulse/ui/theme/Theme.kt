@@ -1,53 +1,73 @@
 package com.example.newspulse.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+
+
+enum class AppTheme {
+    LIGHT, DARK, AUTUMN, FAIRY
+}
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = NewsBlue,
+    secondary = NewsBlueLight,
+    tertiary = Color(0xFF4FC3F7),
+    background = DarkBackground,
+    surface = DarkSurface,
+    onPrimary = Color.Black,
+    onBackground = TextPrimary,
+    onSurface = TextPrimary
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = Teal700,
     secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+    tertiary = Pink40,
+    background = Color.White,
+    surface = Color.White,
     onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    onBackground = Color.Black,
+    onSurface = Color.Black
+)
+
+private val AutumnColorScheme = lightColorScheme(
+    primary = AutumnOrange,
+    secondary = AutumnRed,
+    tertiary = AutumnYellow,
+    background = AutumnLightTan,
+    surface = AutumnLightTan,
+    onPrimary = AutumnRed,
+    onBackground = AutumnBrown,
+    onSurface = AutumnBrown
+)
+
+
+private val fairyColorScheme = darkColorScheme(
+    primary = FairyLavender,
+    secondary = FairyLilac,
+    tertiary = FairyMistBlue,
+    background = FairyNight,
+    surface = FairyNight,
+    onPrimary = Color(0xFF472B8A),
+    onBackground = FairyCream,
+    onSurface = FairyCream
 )
 
 @Composable
 fun NewsPulseTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    appTheme: AppTheme = if (isSystemInDarkTheme()) AppTheme.DARK else AppTheme.LIGHT,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    val colorScheme = when (appTheme) {
+        AppTheme.LIGHT -> LightColorScheme
+        AppTheme.DARK -> DarkColorScheme
+        AppTheme.AUTUMN -> AutumnColorScheme
+        AppTheme.FAIRY -> fairyColorScheme
     }
 
     MaterialTheme(

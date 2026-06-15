@@ -1,90 +1,101 @@
 package com.example.newspulse.ui.screens
 
-
+import android.os.Build
+import android.text.Html
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.newspulse.R
+import com.example.newspulse.data.NewsItem
+import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 import com.example.newspulse.ui.components.detailArticle.ImagePartDeatiledArticle
 import com.example.newspulse.ui.components.detailArticle.MyAuthorView
 import com.example.newspulse.ui.components.detailArticle.likeandComment
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MyDetailedArticleScreen(
-    image: Int,
-    title: String,
-    description: String,
-    content: String,
+    article: NewsItem,
     onBack: () -> Unit
 ) {
-
-
     LazyColumn(
-        modifier = Modifier
-
-
-            .background(color = Color.White),
-
-
-        ) {
+        modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+    ) {
         item {
-            ImagePartDeatiledArticle(image, title, description)
-
+            ImagePartDeatiledArticle(article)
         }
         item {
-            MyAuthorView()
-
+            MyAuthorView(article)
         }
         item {
             Column(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)
+                modifier = Modifier.padding( top = 24.dp, bottom = 24.dp, start = 20.dp, end = 20.dp)
             ) {
-                Text(
-                    text = content,
-                    fontSize = 18.sp,
-                    color = Color.Black,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Justify,
+                val cleanDescription = Html.fromHtml(
+                    article.description ?: "",
+                    Html.FROM_HTML_MODE_LEGACY
+                ).toString()
+
+                val cleanContent = Html.fromHtml(
+                    article.content ?: "",
+                    Html.FROM_HTML_MODE_LEGACY
+                ).toString()
+
+                AutoText(
+                    text = cleanContent ,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
                     fontFamily = FontFamily.Serif
                 )
+                AutoText(
+                    text = cleanDescription,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
+                    fontFamily = FontFamily.Serif
+                )
+                AutoText(
+                    text = cleanContent,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
+                    fontFamily = FontFamily.Serif
+                )
+                AutoText(
+                    text = cleanDescription,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
+                    fontFamily = FontFamily.Serif
+                )
+                AutoText(
+                    text = cleanContent,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
+                    fontFamily = FontFamily.Serif
+                )
+                AutoText(
+                    text = cleanDescription,
+                    baseFontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Justify,
+                    fontFamily = FontFamily.Serif
+                )
+
             }
         }
         item {
             likeandComment()
-
         }
-    }
-}
-
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MyPreviewOfDetailArticle() {
-    MaterialTheme {
-        MyDetailedArticleScreen(
-            image = R.drawable.img_1,
-            "Business",
-            "Bitcoin: The Trendsetter Shaping the Future of Crypto Investment \n",
-            content = "Btcoin has oncan ce again asserted its dominance in the global financial landscape, transcending its initial identity as a mere digital currency to become a foundational asset class for institutional investors. As we move further into 2024, the ripples of its recent technological upgrades and the stabilizing regulatory environment are creating a new paradigm for how the world perceives value and decentralized trust.\n" +
-                    "\n" +
-                    "The narrative surrounding cryptocurrency is shifting from speculative volatility toward strategic asset allocation. Financial institutions that once remained on the sidelines are now integrating blockchain-based assets into their diversified portfolios, citing Bitcoin's role as a potential hedge against traditional market fluctuations and inflationary pressures.\n" +
-                    "\n" +
-                    "\"Bitcoin is no longer an experiment; it is the benchmark for the next generation of financial infrastructure.\"\n" +
-                    "\n" +
-                    "Industry experts point to the \"halving\" events and the introduction of spot ETFs as critical catalysts. These mechanisms have not only reduced the available supply but have also democratized access for millions of retail investors who prefer the security of traditional brokerage accounts over direct wallet management.\n" +
-                    "\n" +
-                    "However, the road ahead is not without challenges. Sustainability remains a central theme in the discourse, with increased pressure on mining operations to transition toward renewable energy sources. The intersection of environmental responsibility and digital scarcity will likely define the next chapter of the Bitcoin story.",
-            onBack = {}
-        )
     }
 }

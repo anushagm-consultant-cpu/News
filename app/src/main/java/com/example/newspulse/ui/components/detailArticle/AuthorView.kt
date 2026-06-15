@@ -24,11 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.newspulse.data.NewsItem
-import com.example.newspulse.formatDate
-import com.example.newspulse.ui.components.AutoText
+import com.example.newspulse.data.formatDate
+import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -68,7 +69,7 @@ fun MyAuthorView(article: NewsItem){
                 AutoText(text = article.author?:"Unknown Author",
                     fontWeight = FontWeight.SemiBold,
                     maxLines = 1,
-                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.primary,
                     baseFontSize = 18.sp)
                 Row (
