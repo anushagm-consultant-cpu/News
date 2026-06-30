@@ -59,7 +59,8 @@ fun MyFeaturedPage(featuredStories: List<NewsItem>,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp),
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
+                            placeholder =  androidx.compose.ui.res.painterResource(id = com.example.newspulse.R.drawable.img_12)
                         )
                         Column(modifier = Modifier.padding(16.dp)) {
                             AutoText(

@@ -8,4 +8,7 @@ plugins {
 
     //firebase
     alias(libs.plugins.google.services) apply false
+    
+    //hilt
+    alias(libs.plugins.hilt) apply false
 }

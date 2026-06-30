@@ -69,7 +69,8 @@ fun MyLatestNewsPage(
                 model = newsItem.image,
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                placeholder = androidx.compose.ui.res.painterResource(id = com.example.newspulse.R.drawable.img_12)
             )
         }
         Spacer(modifier = Modifier.width(16.dp))

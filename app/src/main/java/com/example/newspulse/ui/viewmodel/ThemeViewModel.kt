@@ -1,31 +1,33 @@
 package com.example.newspulse.ui.viewmodel
 
-import android.app.Application
-import android.content.Context
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.newspulse.data.ThemeDataManager
 import com.example.newspulse.ui.theme.AppTheme
-import kotlinx.coroutines.flow.MutableStateFlow
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ThemeViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ThemeViewModel @Inject constructor(
+    private val dataManager: ThemeDataManager,
+) : ViewModel() {
 
-    private val prefs = application.getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+    // Converts the cold Flow from DataStore into a hot StateFlow for the UI
+    val appTheme: StateFlow<AppTheme> = dataManager.themeFlow
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = AppTheme.LIGHT
+        )
 
-    private val _appTheme = MutableStateFlow(loadTheme())
-    val appTheme: StateFlow<AppTheme> = _appTheme.asStateFlow()
-
+    // Saves the theme choice asynchronously using Coroutines
     fun setTheme(theme: AppTheme) {
-        _appTheme.value = theme //updates the ui immediatly
-        prefs.edit().putString("selected_theme", theme.name).apply()
-    }
-
-    private fun loadTheme(): AppTheme {
-        val themeName = prefs.getString("selected_theme", AppTheme.LIGHT.name)
-        return try {
-            AppTheme.valueOf(themeName ?: AppTheme.LIGHT.name)
-        } catch (e: Exception) {
-            AppTheme.LIGHT
+        viewModelScope.launch {
+            dataManager.saveTheme(theme)
         }
     }
 }

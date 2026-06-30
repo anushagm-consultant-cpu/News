@@ -22,11 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FontDownload
-import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Interests
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -41,22 +36,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newspulse.navigation.Route
 import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 import com.example.newspulse.ui.viewmodel.AuthViewModel
 import com.example.newspulse.ui.viewmodel.HistoryViewModel
 import com.example.newspulse.ui.viewmodel.SavedViewModel
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Interests
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.HelpOutline
 
 @Composable
 fun ProfileScreen(
     onNavigate: (Route) -> Unit = {},
     onLogout: () -> Unit = {},
     innerPadding: PaddingValues,
-    savedViewModel: SavedViewModel = viewModel(),
-    historyViewModel: HistoryViewModel=viewModel(),
-    authViewModel: AuthViewModel=viewModel()
+    savedViewModel: SavedViewModel = hiltViewModel(),
+    historyViewModel: HistoryViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
+    val isLoggedIn = authViewModel.isLoggedIn
     val savedCount by savedViewModel.savedNews.collectAsState()
 
     val historyCount by historyViewModel.historyNews.collectAsState()
@@ -397,25 +397,36 @@ fun ProfileScreen(
         //Logout button
         item {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 OutlinedButton(
                     onClick = {
-                        authViewModel.logout(onLogout)
+                       if(isLoggedIn){
+                           authViewModel.logout {
+                               onNavigate(Route.Onboarding)
+                           }
+
+                       }else{
+                           onNavigate(Route.Login)
+
+                       }
                     },
                     modifier = Modifier.padding(vertical = 15.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
+                    border = BorderStroke(1.dp, if(isLoggedIn) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary),
 
 
                 ) {
-                    AutoText(text = "Log out"
+                    AutoText(text = if(isLoggedIn) "Logout" else "Login"
                         .uppercase(),
-                        color = MaterialTheme.colorScheme.error,
+                        color =if(isLoggedIn){
+                            MaterialTheme.colorScheme.error
+                        }else{
+                            MaterialTheme.colorScheme.primary
+                        },
                         baseFontSize = 16.sp)
                 }
             }
         }
     }
 }
-

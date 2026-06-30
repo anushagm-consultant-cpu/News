@@ -75,7 +75,8 @@ fun MyTrendingPage(
                     model = news.image,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    placeholder = androidx.compose.ui.res.painterResource(id = com.example.newspulse.R.drawable.img_12)
                 )
 
                 // Added a gradient background for much better text readability
@@ -113,7 +114,7 @@ fun MyTrendingPage(
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
-                    
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -126,7 +127,7 @@ fun MyTrendingPage(
                         )
 
 
-                        
+
 
                     }
                     Spacer(modifier = Modifier.height(12.dp))

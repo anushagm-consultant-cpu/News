@@ -3,22 +3,19 @@ package com.example.newspulse.data.api
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import com.example.newspulse.data.ArticleDatabase
-import com.example.newspulse.repository.NewsRepository
+import dagger.hilt.android.HiltAndroidApp
+import okhttp3.OkHttpClient
+import javax.inject.Inject
 
+@HiltAndroidApp
 class NewsPulseApplication : Application(), ImageLoaderFactory {
-    override fun onCreate() {
-        super.onCreate()
 
-        val database = ArticleDatabase.getDatabase(this)
-        NewsRepository.init(database.getArticleDao())
-    }
+
+    @Inject lateinit var okHttpClient: OkHttpClient
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this)
-            .okHttpClient {
-                RetrofitClient.okHttpClient
-            }
+            .okHttpClient (okHttpClient)
             .build()
     }
 }

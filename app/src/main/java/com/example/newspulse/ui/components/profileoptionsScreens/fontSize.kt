@@ -1,6 +1,7 @@
 package com.example.newspulse.ui.components.profileoptionsScreens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -46,7 +47,7 @@ fun DemoFrontSizeScreen(onBackClick: () -> Unit,
             ) {
                 // PREVIEW AREA
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 30.dp, vertical = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AutoText(
@@ -60,11 +61,7 @@ fun DemoFrontSizeScreen(onBackClick: () -> Unit,
                         text = "qwertyuiopasdfghjkl;zxcvbnm,qwertyuioasdfghjklzxcvbnm,qwertyuiopasdfghjklzxcvbnmwertyuiopasdfghjklxcvbnm,",
                         baseFontSize = 16.sp,
                         lineHeight = (16f * 1.2f).sp
-
-
                         )
-
-                    Spacer(modifier = Modifier.height(8.dp))
 
 
                 }

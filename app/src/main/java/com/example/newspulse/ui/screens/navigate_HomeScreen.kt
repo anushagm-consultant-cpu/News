@@ -30,6 +30,12 @@ import com.example.newspulse.ui.components.homeComponents.MyLatestNewsPage
 import com.example.newspulse.ui.components.homeComponents.MyTrendingPage
 import com.example.newspulse.ui.viewmodel.HomeViewModel
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -43,6 +49,39 @@ fun homeScreenUI(
     val trending by homeViewModel.trendingNews.collectAsState()
     val breaking by homeViewModel.breakingNews.collectAsState()
     val latest by homeViewModel.latestNews.collectAsState()
+
+    val error by homeViewModel.error.collectAsState()
+
+    if(error != null){
+        AlertDialog(
+            onDismissRequest = { homeViewModel.clearError() },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        homeViewModel.fetchAllNews()
+                    }
+                ) {
+                    Text(text = "Retry")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        homeViewModel.clearError()
+                    }
+                ) {
+                    Text(text = "Dismiss")
+                }
+
+            },
+            title = {
+                Text(text = "Error")
+            },
+            text = {
+                Text(text = error ?: "Something went wrong")
+            }
+        )
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -86,7 +125,7 @@ fun homeScreenUI(
 
                 }
             }
-            //  FEATURED STORIES (HORIZONTAL ROW) - Taking next 5 or top 5
+            //  FEATURED STORIES (HORIZONTAL ROW) -  top 5
             item {
                 MyFeaturedPage(featuredStories = breaking.take(5),
                     onNewsClick = { news ->

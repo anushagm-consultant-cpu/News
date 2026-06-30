@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newspulse.ui.components.homeComponents.MyLatestNewsPage
 import com.example.newspulse.ui.viewmodel.HistoryViewModel
@@ -25,7 +26,7 @@ import com.example.newspulse.data.NewsItem
 fun MyreadingHistroy(
     onBackClick: () -> Unit,
     onNewsClick: (NewsItem) -> Unit,
-    viewModel: HistoryViewModel = viewModel()
+    viewModel: HistoryViewModel = hiltViewModel()
 ) {
     val historyNews by viewModel.historyNews.collectAsState()
 

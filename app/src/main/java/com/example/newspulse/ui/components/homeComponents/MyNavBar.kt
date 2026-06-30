@@ -31,6 +31,7 @@ fun MyNavBar(navController: NavHostController) {
         NavItem("Profile", Icons.Filled.Person,Icons.Outlined.Person, Route.Profile),
     )
 
+
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface
@@ -59,7 +60,7 @@ fun MyNavBar(navController: NavHostController) {
                         contentDescription = item.title,
                         modifier = Modifier.size(25.dp)
                     )
-                }, 
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.primary,
                     selectedTextColor = MaterialTheme.colorScheme.primary,

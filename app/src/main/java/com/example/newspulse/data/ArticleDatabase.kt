@@ -10,7 +10,7 @@ import androidx.room.TypeConverters
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase : RoomDatabase() {
     abstract fun getArticleDao(): ArticleDao
-    
+
     companion object {
 
         private var instance: ArticleDatabase? = null
@@ -24,6 +24,7 @@ abstract class ArticleDatabase : RoomDatabase() {
                     ArticleDatabase::class.java,
                     "article_database"
                 )
+                    .fallbackToDestructiveMigration(false)
                 .build()
                 instance = newInstance
                 newInstance
