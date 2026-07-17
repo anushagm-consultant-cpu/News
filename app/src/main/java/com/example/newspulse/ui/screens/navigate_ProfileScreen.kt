@@ -84,11 +84,12 @@ fun ProfileScreen(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Spacer(modifier = Modifier.width(5.dp))
                         //Articles Read
                         Box(
                             modifier = Modifier
                                 .height(95.dp)
-                                .width(123.dp)
+                                .weight(1f)
                                 .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
                         ) {
                             Column(
@@ -109,11 +110,12 @@ fun ProfileScreen(
                                 )
                             }
                         }
+                        Spacer(modifier = Modifier.width(5.dp))
                         //Saved Articles
                         Box(
                             modifier = Modifier
                                 .height(95.dp)
-                                .width(123.dp)
+                                .weight(1f)
                                 .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
                         ) {
                             Column(
@@ -132,30 +134,8 @@ fun ProfileScreen(
                                 )
                             }
                         }
-                        //Topics
-                        Box(
-                            modifier = Modifier
-                                .height(95.dp)
-                                .width(123.dp)
-                                .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(5.dp))
-                        ) {
-                            Column(
-                                modifier = Modifier.align(Alignment.Center),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                AutoText(
-                                    text = "12",
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold,
-                                    baseFontSize = 18.sp
-                                )
-                                AutoText(
-                                    text = "TOPICS",
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    baseFontSize = 13.sp
-                                )
-                            }
-                        }
+                        Spacer(modifier = Modifier.width(5.dp))
+
                     }
                 }
             }
@@ -238,7 +218,7 @@ fun ProfileScreen(
                         )
                         Spacer(modifier = Modifier.width(20.dp))
                         AutoText(
-                            text = "Interest & Perference", 
+                            text = "Interest & Perference",
                             color = MaterialTheme.colorScheme.onSurface,
                             baseFontSize = 18.sp
                         )
@@ -252,40 +232,40 @@ fun ProfileScreen(
                     }
                 }
                 //Box 3 ----Notification
-                Box {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(70.dp)
-                            .clickable { onNavigate(Route.MyrNotificationScreen) }
-                            .background(color = MaterialTheme.colorScheme.surface)
-                            .padding(horizontal = 20.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = "History",
-                            modifier = Modifier
-                                .size(40.dp)
-                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
-                                .padding(8.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.width(20.dp))
-                        AutoText(
-                            text = "Notification", 
-                            color = MaterialTheme.colorScheme.onSurface,
-                            baseFontSize = 18.sp
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        Icon(
-                            imageVector = Icons.Default.ArrowForwardIos,
-                            contentDescription = "Navigate",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                        )
-                    }
-                }
+//                Box {
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(70.dp)
+//                            .clickable { onNavigate(Route.MyrNotificationScreen) }
+//                            .background(color = MaterialTheme.colorScheme.surface)
+//                            .padding(horizontal = 20.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Icon(
+//                            imageVector = Icons.Default.Notifications,
+//                            contentDescription = "History",
+//                            modifier = Modifier
+//                                .size(40.dp)
+//                                .background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), RoundedCornerShape(8.dp))
+//                                .padding(8.dp),
+//                            tint = MaterialTheme.colorScheme.primary
+//                        )
+//                        Spacer(modifier = Modifier.width(20.dp))
+//                        AutoText(
+//                            text = "Notification",
+//                            color = MaterialTheme.colorScheme.onSurface,
+//                            baseFontSize = 18.sp
+//                        )
+//                        Spacer(modifier = Modifier.weight(1f))
+//                        Icon(
+//                            imageVector = Icons.Default.ArrowForwardIos,
+//                            contentDescription = "Navigate",
+//                            modifier = Modifier.size(16.dp),
+//                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+//                        )
+//                    }
+//                }
                 //box 4 ----- App theme
                 Box {
                     Row(

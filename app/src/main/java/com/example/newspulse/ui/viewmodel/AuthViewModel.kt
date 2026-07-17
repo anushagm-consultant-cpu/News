@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -65,6 +66,21 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun signInWithGoogle(idToken: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            isLoading = true
+            try {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(credential).await()
+                onResult(true, "Google Sign-In Successful")
+            } catch (e: Exception) {
+                onResult(false, e.message ?: "Google Sign-In Failed")
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
     fun logout(onLogout: () -> Unit) {
         auth.signOut() //this deletes the session token(ticket) and auth.currentuser becomes null
         onLogout()
@@ -80,5 +96,3 @@ class AuthViewModel @Inject constructor() : ViewModel() {
         }
     }
     }
-
-

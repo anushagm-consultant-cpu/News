@@ -2,7 +2,6 @@ package com.example.newspulse.ui.components.profileoptionsScreens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.Scaffold
@@ -55,7 +54,6 @@ fun DemoFrontSizeScreen(onBackClick: () -> Unit,
                         baseFontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
                         lineHeight = (24f * 1.2f).sp
-
                         )
                     AutoText(
                         text = "qwertyuiopasdfghjkl;zxcvbnm,qwertyuioasdfghjklzxcvbnm,qwertyuiopasdfghjklzxcvbnmwertyuiopasdfghjklxcvbnm,",

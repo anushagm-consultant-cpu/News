@@ -9,7 +9,7 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ArticleDao {
+interface  ArticleDao {
 
     //onConflict = REPLACE: If you try to save an article that already exists (based on its Primary Key), it will overwrite the old one with the new data.
     @Insert(onConflict = OnConflictStrategy.REPLACE)

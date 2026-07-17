@@ -6,6 +6,10 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <attribution
+        android:label="@string/app_name"
+        android:tag="attributionTag"/>
+
     <application
         android:name=".data.api.NewsPulseApplication"
         android:allowBackup="true"
@@ -29,7 +33,9 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.NewsPulse">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NewsPulse"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

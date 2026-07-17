@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material)
-    
+
     implementation(libs.volley)
     
     implementation("androidx.navigation:navigation-compose:2.8.5")
@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.androidx.compose.foundation)
 
     ksp(libs.androidx.room.compiler)
 
@@ -87,6 +88,9 @@ dependencies {
 
     // dependency for Firebase Authentication
     implementation(libs.firebase.auth)
+
+    //dependency for google
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
 
     //firebase notification
     implementation("com.google.firebase:firebase-messaging")

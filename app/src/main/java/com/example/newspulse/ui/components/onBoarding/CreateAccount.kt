@@ -39,25 +39,29 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.newspulse.ui.viewmodel.AuthViewModel
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun CreateAccountScreen(
-onLoginClick: () -> Unit = {},
-onSignUpSuccess: () -> Unit = {},
-authViewModel: AuthViewModel = viewModel()
-){
+    onLoginClick: () -> Unit = {},
+    onSignUpSuccess: () -> Unit = {},
+    authViewModel: AuthViewModel = viewModel()
+) {
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
     var isChecked by remember { mutableStateOf(false) }
+
+    // Using the reusable Google Sign-In handler
+    val onGoogleSignInClick = rememberGoogleSignInHandler(
+        authViewModel = authViewModel,
+        onSuccess = onSignUpSuccess,
+        onError = { msg -> Toast.makeText(context, msg, Toast.LENGTH_SHORT).show() }
+    )
 
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -73,7 +77,6 @@ authViewModel: AuthViewModel = viewModel()
 
         Text(
             modifier = Modifier.padding(horizontal = 24.dp),
-
             text = "Join the Community and stay updated with the latest news",
             fontSize = 16.sp,
             textAlign = TextAlign.Center,
@@ -84,40 +87,36 @@ authViewModel: AuthViewModel = viewModel()
 
         OutlinedTextField(
             value = name,
-            onValueChange = {name =it},
-            label = {Text("Full Name")},
-            placeholder = {Text("Enter your Full Name", fontSize = 13.sp)},
+            onValueChange = { name = it },
+            label = { Text("Full Name") },
+            placeholder = { Text("Enter your Full Name", fontSize = 13.sp) },
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp),
             shape = RoundedCornerShape(12.dp)
-
-
         )
 
-Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
             value = email,
-            onValueChange = {email =it},
-            label = {Text("Email")},
-            placeholder = {Text("Enter your email", fontSize = 13.sp)},
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            placeholder = { Text("Enter your email", fontSize = 13.sp) },
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp),
             shape = RoundedCornerShape(12.dp)
-
-
         )
         Spacer(modifier = Modifier.height(8.dp))
 
         var passwordVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             value = password,
-            onValueChange = {password =it},
-            label = {Text("Password")},
-            placeholder = {Text("Enter your password", fontSize = 13.sp)},
-            visualTransformation =if(passwordVisible){
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            placeholder = { Text("Enter your password", fontSize = 13.sp) },
+            visualTransformation = if (passwordVisible) {
                 androidx.compose.ui.text.input.VisualTransformation.None
-            }else{
+            } else {
                 PasswordVisualTransformation()
             },
             trailingIcon = {
@@ -127,7 +126,6 @@ Spacer(modifier = Modifier.height(8.dp))
                         contentDescription = if (passwordVisible) "Hide Password" else "Show Password"
                     )
                 }
-
             },
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp),
@@ -146,29 +144,24 @@ Spacer(modifier = Modifier.height(8.dp))
                 checked = isChecked,
                 onCheckedChange = { isChecked = it }
             )
-           val annotatedString = buildAnnotatedString {
-               append("By creating an account, you agree to our ")
-
-               pushStringAnnotation(tag = "terms", annotation = "terms")
-               withStyle(style=SpanStyle(color = MaterialTheme.colorScheme.primary,fontWeight = FontWeight.Bold)) {
-                   append("Terms of Service")
-               }
-               pop()
-
-               append(" and ")
-
-               pushStringAnnotation(tag = "privacy", annotation = "privacy")
-               withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary ,fontWeight = FontWeight.Bold)) {
-                   append("Privacy Policy")
-               }
-               pop()
-
-
-           }
+            val annotatedString = buildAnnotatedString {
+                append("By creating an account, you agree to our ")
+                pushStringAnnotation(tag = "terms", annotation = "terms")
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)) {
+                    append("Terms of Service")
+                }
+                pop()
+                append(" and ")
+                pushStringAnnotation(tag = "privacy", annotation = "privacy")
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)) {
+                    append("Privacy Policy")
+                }
+                pop()
+            }
             ClickableText(
                 text = annotatedString,
-                style= TextStyle(
-                    color = Color.Black,
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal
                 ),
@@ -192,10 +185,9 @@ Spacer(modifier = Modifier.height(8.dp))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-       Button(
+        Button(
             onClick = {
-
-                authViewModel.signup(email,password) { success, message ->
+                authViewModel.signup(email, password) { success, message ->
                     if (success) {
                         onSignUpSuccess()
                     } else {
@@ -206,16 +198,19 @@ Spacer(modifier = Modifier.height(8.dp))
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .height(56.dp),
-           enabled = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && isChecked,
-        ){
-           if(authViewModel.isLoading){
-               androidx.compose.material3.CircularProgressIndicator(
-                   color = Color.White,
-                   modifier = Modifier.size(24.dp))
-           }
-            Text(text = "Create Account",
+            enabled = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && isChecked,
+        ) {
+            if (authViewModel.isLoading) {
+                androidx.compose.material3.CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            Text(
+                text = "Create Account",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,)
+                fontWeight = FontWeight.Bold,
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -223,29 +218,31 @@ Spacer(modifier = Modifier.height(8.dp))
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
+        ) {
             HorizontalDivider(modifier = Modifier.weight(1f))
-            Text(text = "Or Sign up With",
+            Text(
+                text = "Or Sign up With",
                 fontSize = 16.sp,
                 color = Color.Gray,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(horizontal = 16.dp))
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
             HorizontalDivider(modifier = Modifier.weight(1f))
-
         }
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedButton(
-            onClick = { },
+            onClick = { onGoogleSignInClick() },
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 24.dp)
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Text(text = "Continue with Google",
+            Text(
+                text = "Continue with Google",
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,)
-
+                fontWeight = FontWeight.Bold,
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -270,7 +267,6 @@ Spacer(modifier = Modifier.height(8.dp))
                 .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
-
         ) {
             Text(
                 text = "Already have an account?"
@@ -280,10 +276,9 @@ Spacer(modifier = Modifier.height(8.dp))
             ) {
                 Text(
                     text = "Log In",
-                    color = Color.Blue,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
-
             }
         }
     }

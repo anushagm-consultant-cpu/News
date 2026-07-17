@@ -33,9 +33,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.example.newspulse.ui.Intent.HomeIntent
 import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -46,19 +48,30 @@ fun homeScreenUI(
     homeViewModel: HomeViewModel = viewModel()
 ) {
 
-    val trending by homeViewModel.trendingNews.collectAsState()
-    val breaking by homeViewModel.breakingNews.collectAsState()
-    val latest by homeViewModel.latestNews.collectAsState()
+    val uiState by homeViewModel.state.collectAsState()
 
-    val error by homeViewModel.error.collectAsState()
+    // Trigger data fetch when the screen is first composed
+    LaunchedEffect(Unit) {
+      //  homeViewModel.fetchAllNews()
+        homeViewModel.onIntent(HomeIntent.FetchAllNews)
+    }
 
-    if(error != null){
+//    val trending by homeViewModel.trendingNews.collectAsState()
+//    val breaking by homeViewModel.breakingNews.collectAsState()
+//    val latest by homeViewModel.latestNews.collectAsState()
+//
+//    val error by homeViewModel.error.collectAsState()
+
+    if(uiState.error != null){
         AlertDialog(
-            onDismissRequest = { homeViewModel.clearError() },
+            onDismissRequest = {
+                //changing this to use intent
+                homeViewModel.onIntent(HomeIntent.ClearError)
+             },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        homeViewModel.fetchAllNews()
+                        homeViewModel.onIntent(HomeIntent.FetchAllNews)
                     }
                 ) {
                     Text(text = "Retry")
@@ -67,7 +80,8 @@ fun homeScreenUI(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        homeViewModel.clearError()
+                        //changing this to use intent
+                        homeViewModel.onIntent(HomeIntent.ClearError)
                     }
                 ) {
                     Text(text = "Dismiss")
@@ -78,7 +92,7 @@ fun homeScreenUI(
                 Text(text = "Error")
             },
             text = {
-                Text(text = error ?: "Something went wrong")
+                Text(text = uiState.error ?: "Something went wrong")
             }
         )
     }
@@ -94,7 +108,7 @@ fun homeScreenUI(
             // TODAY TRENDING SECTION - Taking top 5
             item {
                 MyTrendingPage(
-                    featuredStories = trending.take(5),
+                    featuredStories = uiState.trendingNews.take(5),
                     onNewsClick = { news ->
                         navController.navigate(
                             Route.MyDetailedArticleScreen(
@@ -127,7 +141,7 @@ fun homeScreenUI(
             }
             //  FEATURED STORIES (HORIZONTAL ROW) -  top 5
             item {
-                MyFeaturedPage(featuredStories = breaking.take(5),
+                MyFeaturedPage(featuredStories = uiState.breakingNews.take(5),
                     onNewsClick = { news ->
                         navController.navigate(
                             Route.MyDetailedArticleScreen(
@@ -155,7 +169,7 @@ fun homeScreenUI(
 
             }
             // LATEST NEWS LIST
-            items(latest) { currentNews ->
+            items(uiState.latestNews) { currentNews ->
 
                 MyLatestNewsPage(
                     newsItem = currentNews,

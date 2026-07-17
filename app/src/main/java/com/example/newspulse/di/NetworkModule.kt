@@ -23,7 +23,7 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("User-Agent", "NewsPulseApp")
+                    .header("User-Agent", "NewsPulseApp")
                     .build()
                 chain.proceed(request)
             }

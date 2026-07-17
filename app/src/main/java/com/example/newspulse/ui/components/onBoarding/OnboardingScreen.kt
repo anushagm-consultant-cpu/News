@@ -83,7 +83,7 @@ fun OnboardingScreen(
     val pageState = rememberPagerState(pageCount = { pages.size })
     val scope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Horizontal Pager for Onboarding Content
             HorizontalPager(
@@ -91,9 +91,7 @@ fun OnboardingScreen(
                 modifier = Modifier.weight(1f)
             ) { position ->
                 OnboardingContent(
-                    page = pages[position],
-                    currentPage = pageState.currentPage,
-                    totalCount = pages.size
+                    page = pages[position]
                 )
             }
 
@@ -105,6 +103,25 @@ fun OnboardingScreen(
                     .padding(horizontal = 24.dp, vertical = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Page Indicators (Dots)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(bottom = 32.dp)
+                ) {
+                    repeat(pages.size) { index ->
+                        val isSelected = index == pageState.currentPage
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    if (isSelected) MaterialTheme.colorScheme.primary
+                                    else Color.LightGray
+                                )
+                        )
+                    }
+                }
+
                 Button(
                     onClick = onLoginClick,
                     modifier = Modifier.fillMaxWidth(),
@@ -157,9 +174,7 @@ fun OnboardingScreen(
 
 @Composable
 fun OnboardingContent(
-    page: OnBoardingData,
-    currentPage: Int,
-    totalCount: Int
+    page: OnBoardingData
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -225,23 +240,5 @@ fun OnboardingContent(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Page Indicators (Dots)
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            repeat(totalCount) { index ->
-                val isSelected = index == currentPage
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .clip(CircleShape)
-                        .background(
-                            if (isSelected) MaterialTheme.colorScheme.primary
-                            else Color.LightGray
-                        )
-                )
-            }
-        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.newspulse
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,15 +27,19 @@ import com.example.newspulse.ui.components.homeComponents.MyNavBar
 import com.example.newspulse.ui.components.homeComponents.MyTopBar
 import com.example.newspulse.ui.theme.NewsPulseTheme
 import com.example.newspulse.ui.viewmodel.*
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.ui.platform.LocalContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private var intentData by mutableStateOf<Intent?>(null)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        intentData=intent
         setContent {
             val themeViewModel: ThemeViewModel = hiltViewModel()
             val appTheme by themeViewModel.appTheme.collectAsState()
@@ -45,23 +51,56 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        MainScreen(themeViewModel = themeViewModel, fontViewModel = fontViewModel)
+                        MainScreen(themeViewModel = themeViewModel,
+                            fontViewModel = fontViewModel,
+                            currentIntent = intentData,
+                            onIntentHandled = {intentData = null})
                     }
                 }
             }
         }
+    }
+    
+    override fun onNewIntent(intent: Intent){
+        super.onNewIntent(intent)
+        setIntent(intent)
+        intentData=intent
+        
     }
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
     fun MainScreen(
         viewModel: HomeViewModel = hiltViewModel(),
         themeViewModel: ThemeViewModel = hiltViewModel(),
-        fontViewModel: FontViewModel = hiltViewModel()
+        fontViewModel: FontViewModel = hiltViewModel(),
+        currentIntent: Intent?,
+        onIntentHandled: () -> Unit
     ) {
 
         val authViewModel: AuthViewModel = hiltViewModel()
         val savedViewModel: SavedViewModel = hiltViewModel()
+        val exploreViewModel: ExploreViewModel = hiltViewModel()
         val navController = rememberNavController()
+        val context = LocalContext.current
+
+        LaunchedEffect(currentIntent) {
+
+            val articleTitle = currentIntent?.getStringExtra("title")
+
+            if(!articleTitle.isNullOrEmpty()){
+                navController.navigate(
+                    Route.MyDetailedArticleScreen(
+                        image = currentIntent.getStringExtra("image"),
+                        title = articleTitle,
+                        description = currentIntent.getStringExtra("description"),
+                        content = currentIntent.getStringExtra("content"),
+                        fromSaved = false
+                    )
+                )
+
+               onIntentHandled()
+            }
+        }
 
         // Notification Permission Logic
         val permissionLauncher = rememberLauncherForActivityResult(
@@ -77,9 +116,10 @@ class MainActivity : ComponentActivity() {
             authViewModel.notificationFcmToken()
         }
 
-        // Auth logic
-        val auth = FirebaseAuth.getInstance()
-        val startDestination = if (auth.currentUser != null) Route.Home else Route.Onboarding
+
+
+        // Set start destination to Splash to show the video first
+        val startDestination = Route.Splash
 
         // Navigation UI logic
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -118,7 +158,8 @@ class MainActivity : ComponentActivity() {
                 savedViewModel = savedViewModel,
                 themeViewModel = themeViewModel,
                 fontViewModel = fontViewModel,
-                authViewModel = authViewModel
+                authViewModel = authViewModel,
+                exploreviewModel = exploreViewModel
             )
         }
     }

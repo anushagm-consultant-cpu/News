@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface NewsApiService {
 
     //trending
-    @GET("v2/everything")
+    @GET("v2/top-headlines")
     suspend fun getTrendingNews(
         @Query("q") query: String,
         @Query("from") from: String? = null,
@@ -17,10 +17,12 @@ interface NewsApiService {
         @Query("apiKey") apiKey: String
     ): Response<NewsResponse>
 
+    //Response is a wrapper that tells if the call was successful(200 OK) OR failed(404 Not found, 401 Unauthorized)
+
 //braking news
-    @GET("v2/top-headlines")
+    @GET("v2/everything")
     suspend fun getBreakingNews(
-        @Query("country") country: String,
+        @Query("q") query: String,
         @Query("apiKey") apiKey: String
     ): Response<NewsResponse>
 
@@ -30,6 +32,14 @@ interface NewsApiService {
     suspend fun getLatestNews(
         @Query("q") query: String,
         @Query("apiKey") apiKey: String
+    ): Response<NewsResponse>
+
+    //search news
+    @GET("v2/everything")
+    suspend fun searchNews(
+        @Query("q") query: String,
+        @Query("apiKey") apiKey: String,
+        @Query("sortBy") sortBy: String? = "publishedAt"
     ): Response<NewsResponse>
 
 }

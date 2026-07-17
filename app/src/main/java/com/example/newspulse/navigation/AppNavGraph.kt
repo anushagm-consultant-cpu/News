@@ -1,19 +1,23 @@
 package com.example.newspulse.navigation
 
+import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.newspulse.ui.Intent.ExploreState
 import com.example.newspulse.ui.components.detailArticle.ArticleSwipeScreen
 import com.example.newspulse.ui.components.onBoarding.CreateAccountScreen
 import com.example.newspulse.ui.components.onBoarding.OnboardingScreen
@@ -27,12 +31,15 @@ import com.example.newspulse.ui.components.profileoptionsScreens.MyreadingHistro
 import com.example.newspulse.ui.screens.ExploreScreen
 import com.example.newspulse.ui.screens.ProfileScreen
 import com.example.newspulse.ui.screens.SaveScreen
+import com.example.newspulse.ui.screens.SplashScreen
 import com.example.newspulse.ui.screens.homeScreenUI
 import com.example.newspulse.ui.viewmodel.AuthViewModel
+import com.example.newspulse.ui.viewmodel.ExploreViewModel
 import com.example.newspulse.ui.viewmodel.FontViewModel
 import com.example.newspulse.ui.viewmodel.HomeViewModel
 import com.example.newspulse.ui.viewmodel.SavedViewModel
 import com.example.newspulse.ui.viewmodel.ThemeViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -45,16 +52,57 @@ fun AppNavGraph(
     themeViewModel: ThemeViewModel,
     fontViewModel: FontViewModel,
     authViewModel: AuthViewModel,
+    exploreviewModel: ExploreViewModel
 
 
     ){
-    val allNews by homeViewModel.allNews.collectAsState()
+//    val allNews by homeViewModel.allNews.collectAsState()
+//    val searchResults by homeViewModel.searchResults.collectAsState()
+
+    val homeState by homeViewModel.state.collectAsState()
+    val allNews = homeState.allNews
+    val exploreState by exploreviewModel.state.collectAsState()
+    val searchResults = exploreState.searchResults
+
+    val context = LocalContext.current
+
+    // Handle Notification Deep Link
+    LaunchedEffect(Unit) {
+        val intent = (context as? Activity)?.intent
+        val articleTitle = intent?.getStringExtra("title")
+
+        if (!articleTitle.isNullOrEmpty()) {
+            Log.d("NotificationNav", "Navigating to: $articleTitle")
+            navController.navigate(
+                Route.MyDetailedArticleScreen(
+                    image = intent.getStringExtra("image"),
+                    title = articleTitle,
+                    description = intent.getStringExtra("description"),
+                    content = intent.getStringExtra("content"),
+                    fromSaved = false
+                )
+            )
+            // Clear the intent so it doesn't trigger again on rotation
+            intent.removeExtra("title")
+        }
+    }
+
 
     NavHost( //it is the empty window where the screens will appear
         navController = navController,
         startDestination = startDestination, // Starting screen class
         modifier = Modifier.fillMaxSize()
     ) {
+        composable<Route.Splash> {
+            SplashScreen(onVideoFinished = {
+                val auth = FirebaseAuth.getInstance()
+                val nextRoute = if (auth.currentUser != null) Route.Home else Route.Onboarding
+                navController.navigate(nextRoute) {
+                    popUpTo(Route.Splash) { inclusive = true }
+                }
+            })
+        }
+
         // Map each Route class to a Composable screen
         composable<Route.Onboarding> {
             OnboardingScreen(
@@ -116,7 +164,11 @@ fun AppNavGraph(
             )
         }
         composable<Route.Explore> {
-            ExploreScreen(innerPadding)
+            ExploreScreen(
+                navController = navController,
+                innerPadding = innerPadding,
+                exploreViewModel =exploreviewModel
+            )
         }
         composable<Route.Save> {
             SaveScreen(
@@ -126,7 +178,6 @@ fun AppNavGraph(
             )
         }
         composable<Route.Profile> {
-            val authViewModel: AuthViewModel = viewModel()
             ProfileScreen(onNavigate = { route ->
                 navController.navigate(route)
             },
@@ -160,7 +211,10 @@ fun AppNavGraph(
             )
         }
         composable<Route.MyInterestAndPreference> {
-            MyInterestAndPreference(onBackClick = { navController.popBackStack() })
+            MyInterestAndPreference(
+                onBackClick = { navController.popBackStack() },
+                exploreViewModel = exploreviewModel
+            )
         }
         composable<Route.MyrNotificationScreen> {
             MyrNotificationScreen(onBackClick = { navController.popBackStack() })
@@ -186,14 +240,21 @@ fun AppNavGraph(
 
             val savedNews by savedViewModel.savedNews.collectAsState()
 
-            // Choose article list based for swiping saved news or all news
-            val articleList = if (args.fromSaved) {
-                savedNews // Use only articles from the Database
-            } else {
-                allNews // Use all articles from the API
+
+            val articleList = when {
+                args.fromSaved -> savedNews
+                // If the article is found in search results, use that list
+                searchResults.any { it.title.trim().equals(args.title.trim(), ignoreCase = true) } -> searchResults
+                // Default to all news (Home screen list)
+                else -> allNews
             }
 
-            val initialPageIndex = articleList.indexOfFirst { it.title == args.title }
+            //  title matching: trim whitespace and ignore case
+            val initialPageIndex = articleList.indexOfFirst {
+                it.title.trim().equals(args.title.trim(), ignoreCase = true) 
+            }
+            
+            Log.d("NotificationNav", "Matching title: '${args.title}' found at index: $initialPageIndex")
 
             ArticleSwipeScreen(
                 article = articleList,
@@ -202,6 +263,4 @@ fun AppNavGraph(
             )
         }
     }
-
-
 }

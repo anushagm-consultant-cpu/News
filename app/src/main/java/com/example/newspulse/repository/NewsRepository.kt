@@ -1,5 +1,6 @@
 package com.example.newspulse.repository
 
+import android.util.Log
 import com.example.newspulse.data.ArticleDao
 import com.example.newspulse.data.NewsItem
 import com.example.newspulse.data.NewsResponse
@@ -21,8 +22,13 @@ class NewsRepository @Inject constructor(
                 sortBy = "popularity",
                 apiKey = "eefee1a52611470e91fffc447798d5f0"
             )
-            if (response.isSuccessful) response.body() else null
+            if (response.isSuccessful){ response.body() }
+            else {
+                Log.e("NewsAPI","Error code: ${response.code()} - ${response.errorBody()?.string()}")
+                null
+            }
         } catch (e: Exception) {
+            Log.e("NewsAPI", "Exception: ${e.message}", e)
             null
         }
     }
@@ -30,7 +36,7 @@ class NewsRepository @Inject constructor(
     suspend fun fetchBreakingNews(): NewsResponse? {
         return try {
             val response = apiService.getBreakingNews(
-                country = "us",
+                query = "tesla",
                 apiKey = "eefee1a52611470e91fffc447798d5f0"
             )
             if (response.isSuccessful){
@@ -54,6 +60,18 @@ class NewsRepository @Inject constructor(
             } else{
                 null
             }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun searchNews(query: String): NewsResponse? {
+        return try {
+            val response = apiService.searchNews(
+                query = query,
+                apiKey = "eefee1a52611470e91fffc447798d5f0"
+            )
+            if (response.isSuccessful) response.body() else null
         } catch (e: Exception) {
             null
         }
