@@ -204,7 +204,10 @@ Fairy Mode:
 
 # Architecture
 
-NewsPulse follows a **Modern Android Architecture** using the **MVVM and Repository patterns**.
+
+The NewsPulse application primarily follows the **MVVM (Model–View–ViewModel)** architecture, ensuring a clean separation between the UI, business logic, and data layers.
+
+For specific screens that require more complex UI state management, such as **Home, Explore, and Interest & Preference**, the **MVI (Model–View–Intent)** pattern is used to provide predictable state handling and a **unidirectional data flow**.
 
 ```text
                     ┌─────────────────────┐
@@ -243,11 +246,8 @@ NewsPulse follows a **Modern Android Architecture** using the **MVVM and Reposit
           └─────────────────┘   └─────────────────┘
 ```
 
-## Application Architecture
 
-The NewsPulse application primarily follows the **MVVM (Model–View–ViewModel)** architecture, ensuring a clean separation between the UI, business logic, and data layers.
 
-For specific screens that require more complex UI state management, such as **Home, Explore, and Interest & Preference**, the **MVI (Model–View–Intent)** pattern is used to provide predictable state handling and a **unidirectional data flow**.
 
 ### Benefits
 
