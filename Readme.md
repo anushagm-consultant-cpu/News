@@ -22,6 +22,14 @@ The application brings together news from different categories such as **Trendin
 The app focuses on a clean interface, smooth interactions, personalization, and accessibility through features such as **dynamic font sizing, themes, saved articles, reading history, and text-to-audio**.
 
 ------
+# Project Status
+
+🚧 **Currently under development**
+
+NewsPulse is an actively developed Android news application.
+New features and improvements are being added as development continues.
+
+------
 
 ## Features
 
@@ -84,13 +92,23 @@ The app focuses on a clean interface, smooth interactions, personalization, and 
 * Personalized news updates
 
 ---
+# Application Flow
+
+<p align="center">
+  <img src="images/flow.png" width="800" alt="NewsPulse Flow" />
+</p>
+
+
+---
 
 # Screenshots
 
-## Onboarding
+### Onboarding & Authentication
 
 <p align="center">
-  <img src="images/onboarding1.png" width="250" alt="NewsPulse Onboarding" />
+  <img src="images/onboarding1.png" width="200" />
+  <img src="images/signin.png" width="200" />
+  <img src="images/login.png" width="200" />
 </p>
 
 ## Home
@@ -117,11 +135,46 @@ The app focuses on a clean interface, smooth interactions, personalization, and 
   <img src="images/saved.png" width="250" alt="NewsPulse Saved Articles" />
 </p>
 
-## Profile
+### Profile & Personalization
 
 <p align="center">
-  <img src="images/profile.png" width="250" alt="NewsPulse Profile" />
+  <img src="images/profile.png" width="200" />
+  <img src="images/history.png" width="200" />
+  <img src="images/interst.png" width="200" />
 </p>
+
+<p align="center">
+  <img src="images/themes.png" width="200" />
+  <img src="images/fontsize.png" width="200" />
+</p>
+
+---
+# Themes
+
+Light Mode:
+
+<p align="center">
+  <img src="images/home.png" width="250" alt="NewsPulse Profile" />
+</p>
+
+Dark Mode:
+
+<p align="center">
+  <img src="images/darkHome.png" width="250" alt="NewsPulse Profile" />
+</p>
+
+Autumn Mode:
+
+<p align="center">
+  <img src="images/autumnHome.png" width="250" alt="NewsPulse Profile" />
+</p>
+
+Fairy Mode:
+
+<p align="center">
+  <img src="images/FairyHome.png" width="250" alt="NewsPulse Profile" />
+</p>
+
 
 ---
 
@@ -136,15 +189,13 @@ The app focuses on a clean interface, smooth interactions, personalization, and 
 | **MVI**                      | State management for selected screens |
 | **Navigation Compose**       | Screen navigation                     |
 | **Retrofit**                 | REST API communication                |
-| **OkHttp**                   | Network client                        |
 | **Kotlin Coroutines**        | Asynchronous programming              |
 | **Flow / StateFlow**         | Reactive state management             |
 | **Room Database**            | Local data persistence                |
 | **DataStore**                | User preferences                      |
 | **Firebase Authentication**  | User authentication                   | 
 | **Hilt**                     | Dependency injection                  |
-| **Coil**                     | Image loading                         |
-| **Generative AI**            | AI-powered news functionality         |
+| **Coil**                     | Image loading                         | 
 | **Text-to-Speech**           | Article-to-audio functionality        |
 
 ---
@@ -189,7 +240,9 @@ NewsPulse follows a **Modern Android Architecture** using the **MVVM and Reposit
           │    News API     │   │    DataStore    │
           └─────────────────┘   └─────────────────┘
 ```
-
+<p align="center">
+  <img src="images/architecture.png" width="800" alt="NewsPulse Article" />
+</p>
 ### Architecture Flow
 
 ```text
@@ -266,7 +319,7 @@ News API
 
 ---
 
-# 
+ 
 # Key Highlights
 
 * Modern Jetpack Compose UI
@@ -280,22 +333,20 @@ News API
 * Article-to-audio experience
 * Search and discovery
 * Reading history
-* Push notifications
-* AI-powered functionality
 * Smooth animations and interactions
 
 ---
 
 # Future Improvements
 
-* Offline-first news experience
-* More advanced AI news summarization
+
+* AI news summarization
 * Multi-language news support
 * Personalized recommendation engine
 * Podcast-style news playlists
 * More accessibility features
 * Improved notification personalization
-* Cross-device synchronization
+* Tablet Optimization
 
 ---
 
@@ -313,9 +364,7 @@ Through the development of NewsPulse, the project provided practical experience 
 * Dependency injection
 * UI/UX design
 * State management
-* Animations
 * Accessibility
-* AI integration
 
 ---
 
