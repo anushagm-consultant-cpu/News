@@ -243,7 +243,7 @@ NewsPulse follows a **Modern Android Architecture** using the **MVVM and Reposit
           └─────────────────┘   └─────────────────┘
 ```
 <p align="center">
-  <img src="images/architecture.png" width="800" alt="NewsPulse Article" />
+  <img src="images/architecture.png" width="1000" alt="NewsPulse Article" />
 </p>
 ### Architecture Flow
 
