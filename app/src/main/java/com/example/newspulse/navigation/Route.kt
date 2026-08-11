@@ -15,13 +15,12 @@ sealed interface Route {
     object Home: Route
 
     @Serializable
-    object Login:Route{
+    object Login:Route
 
-}
     @Serializable
     object CreateAccount: Route
-    @Serializable
 
+    @Serializable
     object Explore: Route
 
     @Serializable
@@ -47,6 +46,14 @@ sealed interface Route {
 
     @Serializable
     object FontSizeScreen: Route
+
+    @Serializable
+    data class Listen(
+        val title: String,
+        val content: String,
+        val source: String,
+        val image: String? = null
+    ): Route
 
     @Serializable
     data class MyDetailedArticleScreen(
