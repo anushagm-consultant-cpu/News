@@ -95,7 +95,7 @@ New features and improvements are being added as development continues.
 # Application Flow
 
 <p align="center">
-  <img src="images/flow.png" width="400" alt="NewsPulse Flow" />
+  <img src="images/flow.png" width="700" alt="NewsPulse Flow" />
 </p>
 
 
@@ -243,7 +243,7 @@ NewsPulse follows a **Modern Android Architecture** using the **MVVM and Reposit
           └─────────────────┘   └─────────────────┘
 ```
 <p align="center">
-  <img src="images/architecture.png" width="300" alt="NewsPulse Article" />
+  <img src="images/architecture.png" width="800" alt="NewsPulse Article" />
 </p>
 ### Architecture Flow
 
