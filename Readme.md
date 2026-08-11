@@ -242,6 +242,23 @@ NewsPulse follows a **Modern Android Architecture** using the **MVVM and Reposit
           │    News API     │   │    DataStore    │
           └─────────────────┘   └─────────────────┘
 ```
+
+## Application Architecture
+
+The NewsPulse application primarily follows the **MVVM (Model–View–ViewModel)** architecture, ensuring a clean separation between the UI, business logic, and data layers.
+
+For specific screens that require more complex UI state management, such as **Home, Explore, and Interest & Preference**, the **MVI (Model–View–Intent)** pattern is used to provide predictable state handling and a **unidirectional data flow**.
+
+### Benefits
+
+* **Separation of Concerns** – Clearly separates UI, business logic, and data responsibilities.
+* **MVVM for Core Application** – Provides a structured and maintainable architecture across the main application.
+* **MVI for Selected Screens** – Enables predictable state management for screens with complex interactions.
+* **Scalability** – Makes it easier to add new features and screens as the application grows.
+* **Maintainability** – Keeps application logic organized and easier to understand and modify.
+* **Testability** – Separates business logic from UI components, making individual components easier to test.
+
+
 <p align="center">
   <img src="images/architecture.png" width="1000" alt="NewsPulse Article" />
 </p>
