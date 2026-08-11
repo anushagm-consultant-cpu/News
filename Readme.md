@@ -144,7 +144,6 @@ The app focuses on a clean interface, smooth interactions, personalization, and 
 | **Firebase Authentication**  | User authentication                   | 
 | **Hilt**                     | Dependency injection                  |
 | **Coil**                     | Image loading                         |
-| **Generative AI**            | AI-powered news functionality         |
 | **Text-to-Speech**           | Article-to-audio functionality        |
 
 ---
@@ -315,7 +314,7 @@ Through the development of NewsPulse, the project provided practical experience 
 * State management
 * Animations
 * Accessibility
-* AI integration
+
 
 ---
 
