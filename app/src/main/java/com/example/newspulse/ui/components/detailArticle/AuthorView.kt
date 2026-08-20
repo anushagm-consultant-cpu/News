@@ -37,7 +37,7 @@ import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 fun MyAuthorView(article: NewsItem){
     Column() {
         HorizontalDivider(
-            modifier = Modifier.padding(horizontal = 24.dp), 
+            modifier = Modifier.padding(horizontal = 24.dp),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
         )
         Row(

@@ -56,7 +56,7 @@ fun DemoFrontSizeScreen(onBackClick: () -> Unit,
                         lineHeight = (24f * 1.2f).sp
                         )
                     AutoText(
-                        text = "qwertyuiopasdfghjkl;zxcvbnm,qwertyuioasdfghjklzxcvbnm,qwertyuiopasdfghjklzxcvbnmwertyuiopasdfghjklxcvbnm,",
+                        text = "Reading should always feel comfortable. Adjust the font size using the slider below until the text is easy to read. Your preference will be applied throughout the app for a consistent reading experience.",
                         baseFontSize = 16.sp,
                         lineHeight = (16f * 1.2f).sp
                         )

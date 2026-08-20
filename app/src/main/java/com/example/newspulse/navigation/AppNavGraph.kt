@@ -12,12 +12,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.newspulse.ui.Intent.ExploreState
 import com.example.newspulse.ui.components.detailArticle.ArticleSwipeScreen
 import com.example.newspulse.ui.components.onBoarding.CreateAccountScreen
 import com.example.newspulse.ui.components.onBoarding.OnboardingScreen
@@ -28,6 +26,7 @@ import com.example.newspulse.ui.components.profileoptionsScreens.MyHelpScreen
 import com.example.newspulse.ui.components.profileoptionsScreens.MyInterestAndPreference
 import com.example.newspulse.ui.components.profileoptionsScreens.MyrNotificationScreen
 import com.example.newspulse.ui.components.profileoptionsScreens.MyreadingHistroy
+import com.example.newspulse.ui.listen.ListenScreen
 import com.example.newspulse.ui.screens.ExploreScreen
 import com.example.newspulse.ui.screens.ProfileScreen
 import com.example.newspulse.ui.screens.SaveScreen
@@ -39,6 +38,7 @@ import com.example.newspulse.ui.viewmodel.FontViewModel
 import com.example.newspulse.ui.viewmodel.HomeViewModel
 import com.example.newspulse.ui.viewmodel.SavedViewModel
 import com.example.newspulse.ui.viewmodel.ThemeViewModel
+import com.example.newspulse.ui.viewmodel.TypographyViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -51,10 +51,9 @@ fun AppNavGraph(
     savedViewModel: SavedViewModel,
     themeViewModel: ThemeViewModel,
     fontViewModel: FontViewModel,
+    typographyViewModel: TypographyViewModel,
     authViewModel: AuthViewModel,
     exploreviewModel: ExploreViewModel
-
-
     ){
 //    val allNews by homeViewModel.allNews.collectAsState()
 //    val searchResults by homeViewModel.searchResults.collectAsState()
@@ -131,7 +130,6 @@ fun AppNavGraph(
                 },
                 onLoginSuccess = {
                     navController.navigate(Route.Home) {
-                        // Clear the backstack so user can't "go back" to login
                         popUpTo(Route.Login::class) {
                             inclusive = true
                         }
@@ -213,11 +211,20 @@ fun AppNavGraph(
         composable<Route.MyInterestAndPreference> {
             MyInterestAndPreference(
                 onBackClick = { navController.popBackStack() },
-                exploreViewModel = exploreviewModel
+                exploreViewModel = exploreviewModel,
+                typographyViewModel = typographyViewModel
             )
         }
         composable<Route.MyrNotificationScreen> {
             MyrNotificationScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable<Route.Listen> {
+            ListenScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigate = { route ->
+                    navController.navigate(route)
+                }
+            )
         }
         composable<Route.MyAppThemeScreen> {
             MyAppThemeScreen(

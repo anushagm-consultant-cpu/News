@@ -104,6 +104,17 @@ fun MyAppThemeScreen(themeViewModel: ThemeViewModel, onBackClick: () -> Unit) {
                    textColor = Color(0xFF472B8A),
                    onClick = { themeViewModel.setTheme(AppTheme.FAIRY) }
                )
+
+               Spacer(modifier = Modifier.height(8.dp))
+
+               customThemeBox(
+                   painter = painterResource(id = R.drawable.img_8),
+                   label = "Rose",
+                   isSelected = currentTheme == AppTheme.ROSE,
+                   backgroundColor = Color.White,
+                   textColor = Color(0xFFE91E63),
+                   onClick = { themeViewModel.setTheme(AppTheme.ROSE) }
+               )
             }
         }
     }

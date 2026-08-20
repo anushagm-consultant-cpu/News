@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -158,13 +159,27 @@ fun ExploreScreen(
                 }
             }
         } else {
-            Text(
-                text = "Browse Categories",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp),
-                color = MaterialTheme.colorScheme.primary
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Browse Categories",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                IconButton(onClick = { navController.navigate(Route.MyInterestAndPreference) }) {
+                    Icon(
+                        imageVector = Icons.Default.Interests,
+                        contentDescription = "Interest & Preference",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
 
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
@@ -259,4 +274,3 @@ data class CategoryItem(
     val height: Dp,
     val isFullWidth: Boolean = false
 )
-

@@ -15,21 +15,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.newspulse.data.NewsItem
+import com.example.newspulse.data.calculateReadingTime
 import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 
 @Composable
-fun ImagePartDeatiledArticle(article: NewsItem) {
+fun ImagePartDeatiledArticle(article: NewsItem){
     val backgroundColor = MaterialTheme.colorScheme.background
     
     Box(
@@ -70,7 +71,7 @@ fun ImagePartDeatiledArticle(article: NewsItem) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AutoText(
                     text = article.source?.name ?: "Unknown Source".uppercase(),
-                    color = if (MaterialTheme.colorScheme.background != Color.White) MaterialTheme.colorScheme.onPrimary else Color.White,
+                    color = if (MaterialTheme.colorScheme.background != Color.White) MaterialTheme.colorScheme.secondary else Color.White,
                     baseFontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -80,11 +81,22 @@ fun ImagePartDeatiledArticle(article: NewsItem) {
                         ).padding(horizontal = 10.dp, vertical = 5.dp)
                 )
                 Spacer(modifier = Modifier.width(20.dp))
+
+
                 AutoText(
-                    text = "4 min",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    baseFontSize = 16.sp
-                )
+                    text = calculateReadingTime(article.description, article.content),
+                    color = Color.DarkGray,
+                    baseFontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    style =
+                    MaterialTheme.typography.displaySmall.copy(lineHeight = 1.2.em,
+                    shadow = Shadow(
+                        color = Color.White.copy(alpha = 0.3f),
+                        offset = Offset(2f,2f),
+                        blurRadius = 4f
+                    )))
+
+
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -94,10 +106,11 @@ fun ImagePartDeatiledArticle(article: NewsItem) {
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 baseFontSize = 32.sp,
-                fontFamily = FontFamily.Serif,
 
-                style = TextStyle(lineHeight = 1.2.em)
-            )
+               style = MaterialTheme.typography.displaySmall.copy(lineHeight = 1.2.em,
+
+                    )
+           )
         }
     }
 }

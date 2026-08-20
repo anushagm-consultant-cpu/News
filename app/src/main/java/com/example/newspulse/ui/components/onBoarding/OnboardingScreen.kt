@@ -76,8 +76,8 @@ fun OnboardingScreen(
 ) {
     val pages = listOf(
         OnBoardingData("Stay Updated", "Get the latest news from around the world.", R.drawable.img),
-        OnBoardingData("Personalized Feed", "Read what matters to you most.", R.drawable.img_10),
-        OnBoardingData("Save for Later", "Bookmark articles to read offline.", R.drawable.img_11)
+        OnBoardingData("Personalize Your Experience", "Switch between beautiful themes and adjust font size for comfortable reading.", R.drawable.img_16),
+        OnBoardingData("Save for Later", "Bookmark articles to read offline.", R.drawable.img_17)
     )
 
     val pageState = rememberPagerState(pageCount = { pages.size })

@@ -2,14 +2,16 @@ package com.example.newspulse.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 
 
 enum class AppTheme {
-    LIGHT, DARK, AUTUMN, FAIRY
+    LIGHT, DARK, AUTUMN, FAIRY, ROSE
 }
 
 private val DarkColorScheme = darkColorScheme(
@@ -40,7 +42,7 @@ private val AutumnColorScheme = lightColorScheme(
     tertiary = AutumnYellow,
     background = AutumnLightTan,
     surface = AutumnLightTan,
-    onPrimary = AutumnRed,
+    onPrimary = Color.White,
     onBackground = AutumnBrown,
     onSurface = AutumnBrown
 )
@@ -57,9 +59,21 @@ private val fairyColorScheme = darkColorScheme(
     onSurface = FairyCream
 )
 
+private val RoseColorScheme = lightColorScheme(
+    primary = Color(0xFFE91E63),
+    secondary = Color(0xFFF48FB1),
+    tertiary = Color(0xFFF8BBD0),
+    background = Color(0xFFFFF1F6),
+    surface = Color(0xFFFFFFFF),
+    onPrimary = AutumnRed,
+    onBackground = Color(0xFF880E4F),
+    onSurface = Color(0xFF880E4F)
+)
+
 @Composable
 fun NewsPulseTheme(
     appTheme: AppTheme = if (isSystemInDarkTheme()) AppTheme.DARK else AppTheme.LIGHT,
+    fontFamily: FontFamily = FontFamily.Default,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -68,11 +82,12 @@ fun NewsPulseTheme(
         AppTheme.DARK -> DarkColorScheme
         AppTheme.AUTUMN -> AutumnColorScheme
         AppTheme.FAIRY -> fairyColorScheme
+        AppTheme.ROSE -> RoseColorScheme
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = getTypography(fontFamily),
         content = content
     )
 }

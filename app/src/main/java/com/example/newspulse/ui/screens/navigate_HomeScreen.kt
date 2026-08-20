@@ -45,7 +45,8 @@ import com.example.newspulse.ui.components.profileoptionsScreens.AutoText
 fun homeScreenUI(
     navController: NavController,
     innerPadding: PaddingValues,
-    homeViewModel: HomeViewModel = viewModel()
+    homeViewModel: HomeViewModel = viewModel(),
+
 ) {
 
     val uiState by homeViewModel.state.collectAsState()
@@ -141,7 +142,7 @@ fun homeScreenUI(
             }
             //  FEATURED STORIES (HORIZONTAL ROW) -  top 5
             item {
-                MyFeaturedPage(featuredStories = uiState.breakingNews.take(5),
+                MyFeaturedPage(featuredStories = uiState.breakingNews.drop(1).take(5),
                     onNewsClick = { news ->
                         navController.navigate(
                             Route.MyDetailedArticleScreen(

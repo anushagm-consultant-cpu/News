@@ -72,7 +72,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.compose.foundation)
-
+    
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
@@ -83,21 +83,13 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    //  Firebase BoM (Bill of Materials)
+    // Firebase
     implementation(platform(libs.firebase.bom))
-
-    // dependency for Firebase Authentication
     implementation(libs.firebase.auth)
-
-    //dependency for google
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-
-    //firebase notification
     implementation("com.google.firebase:firebase-messaging")
 
-    implementation(libs.androidx.core.ktx)
-
-    //hilt
+    // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -105,4 +97,14 @@ dependencies {
     // DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    // AI Models
+    implementation(libs.google.ai.client)
+    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("com.google.firebase:firebase-vertexai:16.0.0-beta01")
+
+    // OpenAI SDK
+    implementation(libs.openai.client)
+    implementation(libs.ktor.client.okhttp)
+
+    implementation(libs.androidx.compose.material3.windowSizeClass)
 }

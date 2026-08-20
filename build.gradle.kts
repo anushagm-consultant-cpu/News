@@ -11,4 +11,5 @@ plugins {
     
     //hilt
     alias(libs.plugins.hilt) apply false
+
 }

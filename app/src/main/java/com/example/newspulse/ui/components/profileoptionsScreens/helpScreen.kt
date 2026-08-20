@@ -254,7 +254,7 @@ fun MyHelpScreen(onBackClick: () -> Unit) {
                     title = "Call",
                     onClick = {
                         val intent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:1234567890")
+                            data = Uri.parse("tel:7338527836")
                         }
                         context.startActivity(intent)
                     }

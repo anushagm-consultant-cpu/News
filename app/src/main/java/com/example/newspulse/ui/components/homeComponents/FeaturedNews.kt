@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.newspulse.data.NewsItem
@@ -70,6 +71,9 @@ fun MyFeaturedPage(featuredStories: List<NewsItem>,
                                 color= MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold,
                                 maxLines = 2,
+                               style = MaterialTheme.typography.titleMedium.copy(
+                                   lineHeight = 1.2.em,
+                               )
 
                                 )
                             Spacer(modifier = Modifier.height(4.dp))

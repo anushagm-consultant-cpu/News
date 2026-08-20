@@ -102,6 +102,10 @@ class NewsRepository @Inject constructor(
         }
     }
 
+    suspend fun unsaveAll() {
+        articleDao.unsaveAllArticles()
+    }
+
     suspend fun addToHistory(newsItem: NewsItem) {
         articleDao.let { dao ->
             val existingItem = dao.getArticleByTitle(newsItem.title)
@@ -113,6 +117,21 @@ class NewsRepository @Inject constructor(
                 historyAt = System.currentTimeMillis()
             )
             dao.insertArticle(itemToHistory)
+        }
+    }
+
+    suspend fun removeFromHistory(newsItem: NewsItem) {
+        articleDao.let { dao ->
+            val existingItem = dao.getArticleByTitle(newsItem.title)
+            if (existingItem != null) {
+                if (existingItem.isSaved) {
+                    // If it's saved, just remove from history flag
+                    dao.insertArticle(existingItem.copy(isHistory = false))
+                } else {
+                    // If not saved and removing from history, delete entirely
+                    dao.deleteArticle(existingItem)
+                }
+            }
         }
     }
 

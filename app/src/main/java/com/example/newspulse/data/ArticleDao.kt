@@ -26,4 +26,7 @@ interface  ArticleDao {
 
     @Delete
     suspend fun deleteArticle(article: NewsItem)
+
+    @Query("UPDATE news_articles SET isSaved = 0")
+    suspend fun unsaveAllArticles()
 }

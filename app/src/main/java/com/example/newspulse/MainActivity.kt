@@ -44,15 +44,18 @@ class MainActivity : ComponentActivity() {
             val themeViewModel: ThemeViewModel = hiltViewModel()
             val appTheme by themeViewModel.appTheme.collectAsState()
             val fontViewModel: FontViewModel = hiltViewModel()
+            val typographyViewModel: TypographyViewModel = hiltViewModel()
+            val fontFamily by typographyViewModel.selectedFontFamily.collectAsState()
 
             CompositionLocalProvider(LocalFontScale provides fontViewModel.fontScale) {
-                NewsPulseTheme(appTheme = appTheme) {
+                NewsPulseTheme(appTheme = appTheme, fontFamily = fontFamily) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
                         MainScreen(themeViewModel = themeViewModel,
                             fontViewModel = fontViewModel,
+                            typographyViewModel = typographyViewModel,
                             currentIntent = intentData,
                             onIntentHandled = {intentData = null})
                     }
@@ -60,12 +63,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    
+
     override fun onNewIntent(intent: Intent){
         super.onNewIntent(intent)
         setIntent(intent)
         intentData=intent
-        
+
     }
     @RequiresApi(Build.VERSION_CODES.O)
     @Composable
@@ -73,6 +76,7 @@ class MainActivity : ComponentActivity() {
         viewModel: HomeViewModel = hiltViewModel(),
         themeViewModel: ThemeViewModel = hiltViewModel(),
         fontViewModel: FontViewModel = hiltViewModel(),
+        typographyViewModel: TypographyViewModel = hiltViewModel(),
         currentIntent: Intent?,
         onIntentHandled: () -> Unit
     ) {
@@ -118,7 +122,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-        // Set start destination to Splash to show the video first
+        // start destination to Splash to show the video first
         val startDestination = Route.Splash
 
         // Navigation UI logic
@@ -158,6 +162,7 @@ class MainActivity : ComponentActivity() {
                 savedViewModel = savedViewModel,
                 themeViewModel = themeViewModel,
                 fontViewModel = fontViewModel,
+                typographyViewModel = typographyViewModel,
                 authViewModel = authViewModel,
                 exploreviewModel = exploreViewModel
             )
